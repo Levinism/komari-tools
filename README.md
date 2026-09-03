@@ -11,15 +11,6 @@
 
 
 Using existing auto-discovery token for UUID: ...
-
-一键清理
-
-执行：
-```text
-bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/clean-komari-agent.sh)
-```text
-
-
 不会删除什么
 
 脚本不会删除：
@@ -43,3 +34,12 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/c
 进入 Agent / Server 添加页面，复制新的 Auto Discovery 安装命令。
 
 4. 在服务器执行新的安装命令
+
+
+执行一键清理：
+```text
+bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/clean-komari-agent.sh)
+
+
+
+
