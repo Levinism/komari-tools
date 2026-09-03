@@ -37,7 +37,8 @@ Using existing auto-discovery token for UUID: ...
 
 
 执行一键清理：
-```text
+
+
 bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/clean-komari-agent.sh)
 
 
