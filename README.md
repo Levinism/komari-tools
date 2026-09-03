@@ -9,15 +9,15 @@
 - Auto Discovery 一直返回 `401 Unauthorized`
 - 日志中出现：
 
-```text
+
 Using existing auto-discovery token for UUID: ...
 
 一键清理
 
 执行：
-
+```text
 bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/clean-komari-agent.sh)
-
+```text
 
 
 不会删除什么
