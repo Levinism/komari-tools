@@ -29,6 +29,7 @@ Using existing auto-discovery token for UUID: ...
 ✅ Agent 进程已清除
 ✅ Agent 程序已删除
 ✅ Auto Discovery 旧身份文件已删除
+
 3. 打开 Komari 后台
 
 进入 Agent / Server 添加页面，复制新的 Auto Discovery 安装命令。
