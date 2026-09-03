@@ -33,7 +33,7 @@ Using existing auto-discovery token for UUID: ...
 执行：
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/你的GitHub用户名/komari-tools/main/clean-komari-agent.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/clean-komari-agent.sh)
 ```
 
 请将：
