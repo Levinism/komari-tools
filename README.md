@@ -36,20 +36,6 @@ Using existing auto-discovery token for UUID: ...
 bash <(curl -fsSL https://raw.githubusercontent.com/Levinism/komari-tools/main/clean-komari-agent.sh)
 ```
 
-请将：
-
-```text
-你的GitHub用户名
-```
-
-替换成自己的 GitHub 用户名。
-
-例如：
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/example/komari-tools/main/clean-komari-agent.sh)
-```
-
 ---
 
 ## 脚本会做什么
