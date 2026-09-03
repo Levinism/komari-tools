@@ -1,52 +1,78 @@
 #!/bin/bash
 
-echo "===== Komari Agent 清理开始 ====="
+set +e
 
-systemctl stop komari-agent 2>/dev/null || true
-systemctl disable komari-agent 2>/dev/null || true
+echo "======================================"
+echo "   Komari Agent 一键彻底清理脚本"
+echo "======================================"
+echo
 
-pkill -f '/opt/komari/agent' 2>/dev/null || true
-pkill -f 'komari-agent' 2>/dev/null || true
+SERVICE="komari-agent"
+AGENT="/opt/komari/agent"
 
-rm -f /etc/systemd/system/komari-agent.service
-rm -f /usr/lib/systemd/system/komari-agent.service
-rm -f /lib/systemd/system/komari-agent.service
-rm -rf /etc/systemd/system/komari-agent.service.d
+echo "[1/6] 停止 Komari Agent..."
 
-rm -f /opt/komari/agent
-rm -f /usr/local/bin/komari-agent
-rm -f /usr/bin/komari-agent
+systemctl stop ${SERVICE}.service 2>/dev/null
+systemctl disable ${SERVICE}.service 2>/dev/null
 
-rm -f /opt/komari/agent.json
-rm -f /opt/komari/agent-config.json
-rm -f /etc/komari-agent.json
-rm -rf /etc/komari-agent
+echo "[2/6] 杀掉残留 Agent 进程..."
 
-systemctl daemon-reload
-systemctl reset-failed 2>/dev/null || true
+pkill -f "/opt/komari/agent" 2>/dev/null
+
+sleep 1
+
+echo "[3/6] 删除 systemd 服务..."
+
+rm -f /etc/systemd/system/${SERVICE}.service
+rm -f /etc/systemd/system/multi-user.target.wants/${SERVICE}.service
+
+systemctl daemon-reload 2>/dev/null
+systemctl reset-failed 2>/dev/null
+
+echo "[4/6] 删除 Komari Agent 程序..."
+
+rm -f "${AGENT}"
+
+echo "[5/6] 检查 Agent 残留..."
 
 echo
-echo "===== 检查残留 ====="
 
-if systemctl cat komari-agent >/dev/null 2>&1; then
-    echo "⚠️ 仍发现 komari-agent systemd 服务"
+if systemctl cat ${SERVICE}.service >/dev/null 2>&1; then
+    echo "❌ systemd 服务仍然存在"
 else
-    echo "✅ systemd 服务已清除"
+    echo "✅ systemd 服务已删除"
 fi
 
-if pgrep -af '/opt/komari/agent|komari-agent' >/dev/null 2>&1; then
-    echo "⚠️ 仍发现 Agent 进程："
-    pgrep -af '/opt/komari/agent|komari-agent'
+if pgrep -f "/opt/komari/agent" >/dev/null 2>&1; then
+    echo "❌ Agent 进程仍然存在"
+    pgrep -af "/opt/komari/agent"
 else
-    echo "✅ Agent 进程已清除"
+    echo "✅ Agent 进程已停止"
 fi
 
-if [ -f /opt/komari/agent ]; then
-    echo "⚠️ /opt/komari/agent 仍存在"
+if [ -f "${AGENT}" ]; then
+    echo "❌ Agent 文件仍然存在：${AGENT}"
 else
-    echo "✅ Agent 文件已清除"
+    echo "✅ Agent 文件已删除"
 fi
 
 echo
-echo "===== 清理完成 ====="
-echo "现在可以回 Komari 后台删除旧节点，然后重新执行自动发现安装命令。"
+echo "[6/6] 当前 /opt/komari 内容："
+
+if [ -d /opt/komari ]; then
+    ls -lah /opt/komari
+else
+    echo "/opt/komari 目录不存在"
+fi
+
+echo
+echo "======================================"
+echo " Komari Agent 清理完成"
+echo "======================================"
+echo
+echo "下一步："
+echo "1. 去 Komari 后台删除原来的服务器节点"
+echo "2. 重新复制 Auto Discovery 安装命令"
+echo "3. 在本机重新安装 Agent"
+echo
+echo "注意：本脚本不会删除 /opt/komari/komari 主控程序。"
